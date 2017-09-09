@@ -22,7 +22,7 @@
 ![maindemowindow01](./Screenshot/TIM图片20170909161056.png)
 
 ### 2.返回结果json格式化
-![maindemowindow02](./Screenshot/TIM图片20170909161207.png)
+
 
 ### 3.使用
 ![maindemowindow03](./Screenshot/TIM图片20170909161451.png)
