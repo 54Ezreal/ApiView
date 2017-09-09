@@ -1,0 +1,180 @@
+﻿@using ApiView.Code
+@{
+    ViewBag.Title = "API集合列表";
+}
+
+@section styles{
+    <style type="text/css">
+        body {
+            font-family: "Microsoft Yahei"
+        }
+
+        p strong {
+            font-size: 20px;
+            font-weight: bolder;
+        }
+
+        .api-info {
+            font-size: 16px
+        }
+
+        .api-head {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        table tr td {
+            vertical-align: middle;
+        }
+
+        .nav-second-level .selected-li {
+            background-color: #08c;
+            color: white;
+        }
+
+        .nav-second-level > li {
+            height: 40px;
+            line-height: 40px;
+            background-color: #efefef;
+            color: #337ab7;
+            text-align: center;
+            cursor: default;
+        }
+
+        form {
+            display: block;
+        }
+
+            form > a:hover {
+                cursor: pointer;
+            }
+            .keyWord{
+                color:red;
+            }
+    </style>
+}
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0px">
+        <div class="api-head">
+            <h2><strong>API</strong>文档管理</h2>
+            <span style="margin-right:50px"><label>文档更新时间 : @ApiView.Code.ApiHelper.lastupdatetime.ToString("yyyy-MM-dd HH:mm:ss")</label> <a href="javascript:help()" style="margin-left:20px">帮助</a> </span>
+        </div>
+        <div class="navbar-default sidebar" role="navigation">
+            <div style="margin:20px 10px 20px 10px;display:flex;align-items:center ">
+                <input type="text" name="keyword" id="keyword" class="form-control"  placeholder="输入关键字查找" value="">
+                &nbsp;
+                <a href="javascript:search()" style="margin-left:5px;"><i class="fa fa-search"></i></a>
+            </div>
+
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    @{
+                        foreach (var c in ApiHelper.DllPaths())
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i>&nbsp;@c.Name<span class="fa arrow"></span></a>
+                                @{
+                                    var cs = ApiHelper.AllApis.Where(t => t.OpenDll.Path == c.Path).ToList();
+                                    if (cs != null)
+                                    {
+                                        <ul class="nav nav-second-level">
+                                            @foreach (var o in cs)
+                                            {
+                                                <li onclick="details('@o.ID',event)" data-id="@o.ID">
+                                                    @o.ToString()
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                }
+                            </li>
+                                    }
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+    </nav>
+
+    <div id="page-wrapper">
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+
+<!-- /#wrapper -->
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            help();
+        });
+
+        function details(id, e) {
+            var par = { id: id };
+            $("#page-wrapper").load("@Url.Action("ApiDetails")", par, function (res) {
+                if (res == undefined) {
+                    layer.msg('加载失败');
+                } else {
+                    $(".nav-second-level li").removeClass("selected-li");
+                    $(e.target).addClass("selected-li");
+                    console.log("APIDetails载入成功");
+                }
+            });
+            return false;
+        }
+
+        function search() {
+            var par = { keyword: $("#keyword").val() }
+            $("#page-wrapper").load("@Url.Action("Search")", par, function (res) {
+                if (res == undefined) {
+                    layer.msg('搜索API失败');
+                } else {
+                    console.log("Search载入成功");
+                }
+            });
+            return false;
+        }
+
+        function search_details(id) {
+            const liArray = $('.nav-second-level>li');
+            for (var i = 0; i < liArray.length; i++) {
+                if ($(liArray[i]).attr('data-id') === id) {
+                    $(".nav-second-level li").removeClass("selected-li");
+                    $(liArray[i]).addClass("selected-li");
+                    $("#page-wrapper").load("@Url.Action("ApiDetails")", { id:id }, function () {
+                        console.log("APIDetails载入成功");
+                    });
+                    break;
+                }
+            }
+            console.log(id);
+        }
+
+        function help() {
+            $("#page-wrapper").load("@Url.Action("Help")", null, function () {
+                console.log("APIHelp载入成功");
+            });
+            return false;
+        }
+
+        $("#keyword").bind('keydown', function (event) {
+            if (event.keyCode == "13") {
+                search();
+            }
+        });
+
+    </script>
+
+
+}

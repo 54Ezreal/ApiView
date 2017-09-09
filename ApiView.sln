@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiView", "ApiView\ApiView.csproj", "{3FF9A40D-FA27-43F7-AFF5-ADF458F05C43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiView.OpenApi", "ApiView.OpenApi\ApiView.OpenApi.csproj", "{EF34CF52-E7E3-4E0A-95F4-2E6C905FF8DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FF9A40D-FA27-43F7-AFF5-ADF458F05C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF9A40D-FA27-43F7-AFF5-ADF458F05C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF9A40D-FA27-43F7-AFF5-ADF458F05C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF9A40D-FA27-43F7-AFF5-ADF458F05C43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF34CF52-E7E3-4E0A-95F4-2E6C905FF8DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF34CF52-E7E3-4E0A-95F4-2E6C905FF8DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF34CF52-E7E3-4E0A-95F4-2E6C905FF8DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF34CF52-E7E3-4E0A-95F4-2E6C905FF8DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32B27FCA-6230-417C-83E5-253BFDA90809}
+	EndGlobalSection
+EndGlobal

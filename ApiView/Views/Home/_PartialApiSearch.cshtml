@@ -1,0 +1,73 @@
+﻿@model List<ApiView.Code.Api>
+@{
+    ViewBag.Title = "API搜索";
+}
+
+<div style="max-width:640px;margin:0 auto;padding:10px 0">
+    <p>
+        <strong>搜索结果:</strong>
+    </p>
+    <br />
+    <div>
+        @{
+            var index = 1;
+            var keyWord = ViewBag.KeyWord;
+        }
+        @foreach (var c in Model)
+        {
+            var o = ApiView.Code.ApiHelper.GetOpenApiAttribute(c.Method);
+            if (o != null)
+            {
+                <div>
+                    <p>
+                        <strong>
+                            <label>@index. 接口名:</label>
+                            <a href="javascript:search_details('@c.ID')">@c.ToString()</a>
+                        </strong>
+                    </p>
+                    <p>
+                        接口描述:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(o.MethodDescription, keyWord))
+                        </span>
+                    </p>
+                    <p>
+                        方法名称:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(o.MethodName, keyWord))
+                        </span>
+                    </p>
+                    <p>
+                        输出描述:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(o.ResultDescription, keyWord))
+                        </span>
+                    </p>
+                    <p>
+                        接口Url:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(c.RelateUrl(), keyWord))
+                        </span>
+                    </p>
+                    <p>
+                        作者:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(o.Author, keyWord))
+                        </span>
+                    </p>
+                    <p>
+                        备注:
+                        <span>
+                            @Html.Raw(ApiView.Code.ApiHelper.HighLightKeyword(o.Note, keyWord))
+                        </span>
+                    </p>
+                    <hr />
+                    <br />
+                </div>
+                index++;
+            }
+        }
+
+    </div>
+
+</div>

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="@Url.Content("~/Content/css/metisMenu.min.css")" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="@Url.Content("~/Content/css/sb-admin-2.min.css")" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="@Url.Content("~/Content/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
+
+    <link href="@Url.Content("~/Content/css/jquery.jsonview.min.css")" rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    @*@Scripts.Render("~/bundles/modernizr")*@
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+
+    @RenderBody()
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+
+    <!-- jQuery -->
+    <script src="@Url.Content("~/Scripts/vendor/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.form.js")"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="@Url.Content("~/Scripts/vendor/bootstrap.min.js")"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="@Url.Content("~/Scripts/vendor/metisMenu.min.js")"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="@Url.Content("~/Scripts/vendor/sb-admin-2.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/vendor/jquery.jsonview.min.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Content/layer/layer.js")"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,237 @@
+﻿@model ApiView.Models.ApiDetailsModel
+@using ApiView.Code
+@{
+    ViewBag.Title = "API详情";
+}
+
+<div style="max-width:740px;margin:0 auto;padding:20px 0;height:100%">
+    <h3 style="font-weight:bold">@Model.api.ToString()</h3>
+    <hr />
+    <p>
+        <strong>接口URL</strong>
+    </p>
+    <ul>
+        <li class="api-info">@Model.api.RelateUrl()</li>
+    </ul>
+    <p>
+        <strong>接口描述</strong>
+    </p>
+    <ul>
+        <li class="api-info">@Model.doc.MethodDescription</li>
+    </ul>
+    <p>
+        <strong>输出描述</strong>
+    </p>
+    <ul>
+        <li class="api-info">@Model.doc.ResultDescription</li>
+    </ul>
+    <p>
+        <strong>请求方式</strong>
+    </p>
+    <ul>
+        <li class="api-info">
+            @{
+                var attributes = Model.api.Method.GetCustomAttributes(false);
+                var requestType = "";
+                foreach (var item in attributes)
+                {
+                    if (item.GetType() == typeof(HttpGetAttribute))
+                    {
+                        requestType = "GET";
+                        break;
+                    }
+                }
+            }
+
+            @if (string.IsNullOrEmpty(requestType))
+            {
+                <span>未设置请求方式,默认为POST</span>
+                requestType = "POST";
+            }
+        </li>
+    </ul>
+    <p>
+        <strong>备注</strong>
+    </p>
+    <ul>
+        <li class="api-info">@Model.doc.Note</li>
+    </ul>
+    <p>
+        <strong>API服务器地址</strong>
+    </p>
+    <ul>
+        <li class="api-info"> @Model.api.OpenDll.Url.Trim('/')/</li>
+    </ul>
+    <p>
+        <strong>请求参数</strong>
+    </p>
+    <form id="apiForm">
+        @{
+            var pars = Model.api.Method.GetParameters();
+            var complexTypeFlag = ApiHelper.IsComplexParameterType(Model.api.Method);
+            if (complexTypeFlag)
+            {
+                <textarea id="data" class="form-control" rows="9" placeholder="当前参数类型为多层嵌套对象无法直接解析测试,请手动拼写后台需要的json数据"></textarea>
+                <input type="button" onclick="validateJson()" class="btn btn-info" value="校验json" style="margin-top:10px" />
+            }
+            else if (pars.Count() > 0)
+            {
+                <table class="table table-bordered" style="max-width:650px;">
+                    <tr>
+                        <th>参数名</th>
+                        <th>参数值</th>
+                        <th>参数类型</th>
+                    </tr>
+                    @foreach (var p in pars)
+                    {
+                        if (p.ParameterType.BaseType == typeof(ValueType) || p.ParameterType == typeof(string) || p.ParameterType == typeof(HttpPostedFileBase))
+                        {
+                    <tr>
+                        <td>
+                            <label style="margin-bottom:0px">@p.Name</label>
+                        </td>
+                        <td>
+                            @if (p.ParameterType == typeof(HttpPostedFileBase))
+                                    {
+                            <input name="@p.Name" type="file" value="" style="width:100%" />
+                                    }
+                                    else
+                                    {
+                            <input name="@p.Name" class="form-control" type="text" value="" style="width:100%" />
+                                    }
+                        </td>
+                        <td>
+                            <label>
+                                (@(p.ParameterType.GetGenericArguments().Length > 0 ? p.ParameterType.GetGenericArguments()[0].Name + ",允许null" : p.ParameterType.Name))
+                            </label>
+                        </td>
+                    </tr>
+                        }
+                        else
+                        {
+                            var properties = p.ParameterType.GetProperties();
+                            foreach (var item in properties)
+                            {
+                    <tr>
+                        <td>
+                            <label style="margin-bottom:0px">@item.Name</label>
+                        </td>
+                        <td>
+                            @if (item.PropertyType == typeof(HttpPostedFileBase))
+                                        {
+                            <input name="@item.Name" type="file" value="" style="width:100%" />
+                                        }
+                                        else
+                                        {
+                            <input name="@item.Name" class="form-control" type="text" value="" style="width:100%" />
+                                        }
+                        </td>
+                        <td>
+                            <label>
+                                (@(item.PropertyType.GetGenericArguments().Length > 0 ? item.PropertyType.GetGenericArguments()[0].Name + ",允许null" : item.PropertyType.Name))
+                            </label>
+                        </td>
+                    </tr>
+                            }
+                        }
+                    }
+                </table>
+            }
+            else
+            {
+                <ul><li>无参数</li></ul>
+            }
+        }
+    </form>
+
+    <div style="max-width:100%;margin-top:20px;margin-bottom:20px" class="clearfix">
+        <p>
+            <strong>Authorization</strong>&nbsp;<small style="color:red">(可选)</small>
+        </p>
+        <input type="text" class="form-control" id="authorization" style="width:100%" />
+    </div>
+    <input type="button" onclick="test()" class="btn btn-info" value="模拟提交" />
+
+    <p style="margin-top:20px;">
+        <strong>模拟结果</strong>
+    </p>
+    <div id="testResult" style="color:green;margin-top:15px;border:1px solid #e1e1e8;background-color:#fcfcfc;min-height:50px">
+
+    </div>
+
+    <div class="toTop" style="position:fixed;bottom:10%;right:5%;display:none;width:64px;height:64px;background-image:url(../../Content/images/sticky-default.png) ">
+
+    </div>
+</div>
+
+<script>
+    function test() {
+        layer.load(1);
+        var headers = {
+            Authorization:  $("#authorization").val()
+        };
+
+        if ('@complexTypeFlag'.toLowerCase() == "true") {
+            $.ajax({
+                url: "@Model.api.OpenDll.Url.Trim('/')/@Model.api.RelateUrl()",
+                type: "@requestType",
+                contentType: "application/json",
+                data: $("#data").val(),
+                headers: headers,
+                success: function (res) {
+                    layer.msg('模拟提交完成');
+                    $("#testResult").JSONView(res);
+                    layer.closeAll('loading');
+                },
+                error: function (err) {
+                    $("#testResult").JSONView(err.responseText);
+                    layer.msg('请求错误');
+                    layer.closeAll('loading');
+                }
+            });
+        } else {
+            $("#apiForm").ajaxSubmit({
+                type: "@requestType",
+                url: "@Model.api.OpenDll.Url.Trim('/')/@Model.api.RelateUrl()",
+                success: function (res) {
+                    layer.msg('模拟提交完成');
+                    $("#testResult").JSONView(res);
+                    layer.closeAll('loading');
+                },
+                headers: headers,
+                error: function (err) {
+                    $("#testResult").JSONView(err.responseText);
+                    layer.msg('请求错误');
+                    layer.closeAll('loading');
+                }
+            });
+        }
+    }
+
+    function validateJson() {
+        try {
+            var str = $("#data").val();
+            JSON.parse(str);
+            layer.msg('json字符串合法');
+        } catch (e) {
+            layer.msg('json字符串有误');
+        }
+    }
+
+    var toTop = $('.toTop');
+    toTop.on('click', function (e) {
+        $('body,html').animate({ scrollTop: 0 }, 1000);
+    })
+
+    $(window).scroll(function (e) {
+        var wHeight = window.innerHeight;
+        if ($(window).scrollTop() >= 800) {
+            toTop.css('display', 'block');
+        } else {
+            toTop.css('display', 'none');
+        }
+    })
+
+
+</script>
+
