@@ -2,8 +2,8 @@
 
 ## 介绍:     
 
-主要是利用attribute标注要产生API文档的Action，通过动态加载程序集反射获取公开的函数，并获取attribute 中的文档注释。 本API文档工具可实现简单的在线模拟请求，美化返回的json数据对象。支持通用的GET以及POST请求， 支持简单对象的POST请求，可根据自己实际需要改造此工具。
-   
+主要是利用attribute标注要产生API文档的Action，通过动态加载程序集反射获取公开的函数，并获取attribute 中的文档注释。 本API文档工具可实现简单的在线模拟请求，美化返回的json数据对象。支持通用的GET以及POST请求， 支持简单对象的POST请求，同样也支持简单文件上传，可根据自己实际需要改造此API文档工具。
+
 ## Authorization:   
 
 关于接口调用参数Authorization使用方法，该参数是可选参数，可根据项目实际情况使用。 模拟请求时，会将值添加到Header中发送。 可根据实际项目需求使用此参数实现HTTP协议基本认证。
@@ -17,11 +17,12 @@
 由于作者能力有限，本API文档工具暂时不支持多重嵌套的复杂引用类型参数,只能暂时通过手动拼写json数据测试模拟请求。
 
 ## Screenshots
-主页
+
+### 1.主页
 ![maindemowindow01](./Screenshot/TIM图片20170909161056.png)
 
-返回结果json格式化
+### 2.返回结果json格式化
 ![maindemowindow02](./Screenshot/TIM图片20170909161207.png)
 
-使用
+### 3.使用
 ![maindemowindow03](./Screenshot/TIM图片20170909161451.png)
