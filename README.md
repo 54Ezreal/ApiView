@@ -22,7 +22,7 @@
 ![maindemowindow01](./Screenshot/TIM图片20170909161056.png)
 
 ### 2.返回结果json格式化
+![maindemowindow02](./Screenshot/TIM图片20170909163236.png)
 
-
-### 3.使用
+### 3.使用attribute标注需要公开的接口
 ![maindemowindow03](./Screenshot/TIM图片20170909161451.png)
